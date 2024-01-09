@@ -122,7 +122,7 @@ function sendDiscordMessage(event) {
 
     var num = Math.floor(Math.random() * 10);
     webhookClient.send({
-        content: `<@&${ROLE_ID}> ${breakingNewsPhrases[num]}`,
+        content: `<@&${process.env.ROLE_ID}> ${breakingNewsPhrases[num]}`,
         username: 'The BIgWilly Tribune',
         avatarURL: 'https://i.imgur.com/AfFp7pu.png',
         embeds: [embed],

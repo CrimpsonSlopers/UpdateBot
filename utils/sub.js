@@ -13,7 +13,7 @@ async function subscribeToEvent() {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + tokenData.access_token,
-                'Client-Id': 'amx9ywcjrmq4rklh8g21vy6pqhjpo0',
+                'Client-Id': process.env.CLIENT_ID,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
