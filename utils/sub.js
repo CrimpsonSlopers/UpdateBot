@@ -25,7 +25,7 @@ async function subscribeToEvent() {
                 'transport': {
                     'method': 'webhook',
                     'callback': `${process.env.SERVER_URL}/eventsub`,
-                    'secret': 's3cre77890ab'
+                    'secret': process.env.CLIENT_SECRET
                 }
             })
         });

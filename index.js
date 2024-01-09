@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const express = require('express');
 const { EmbedBuilder, WebhookClient } = require('discord.js');
 
-const webhookClient = new WebhookClient({ id: process.env.WEBHOOK_ID, token: "" });
+const webhookClient = new WebhookClient({ id: process.env.WEBHOOK_ID, token: process.env.WEBHOOK_TOKEN });
 
 const app = express();
 const port = 8080;
