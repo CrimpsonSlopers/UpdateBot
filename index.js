@@ -43,6 +43,10 @@ app.use(express.raw({          // Need raw message body for signature verificati
     type: 'application/json'
 }))
 
+app.get('/', (req, res) => {
+    res.send('This is a test route. Your server is up and running!');
+});
+
 
 app.post('/eventsub', (req, res) => {
     let message = getHmacMessage(req);

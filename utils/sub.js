@@ -1,3 +1,4 @@
+require('dotenv').config();
 
 async function subscribeToEvent() {
     try {
@@ -6,6 +7,7 @@ async function subscribeToEvent() {
         });
 
         const tokenData = await tokenResponse.json();
+        console.log(tokenData)
 
         const subscriptionResponse = await fetch('https://api.twitch.tv/helix/eventsub/subscriptions', {
             method: 'POST',
@@ -35,4 +37,5 @@ async function subscribeToEvent() {
     }
 }
 
+subscribeToEvent()
 
