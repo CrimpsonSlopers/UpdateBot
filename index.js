@@ -111,7 +111,7 @@ function sendDiscordMessage(event) {
         .setTitle(`${event.title}`)
         .addFields(
             { name: 'Category', value: event.category_name },
-            { name: 'Changed', value: formatDate(new Date()) },
+            { name: 'Changed', value: `<t:${Math.floor(Date.now() / 1000)}:R>` },
         )
         .setThumbnail("https://static-cdn.jtvnw.net/jtv_user_pictures/cdc00955-e56b-437a-9347-52b50dc6a90c-profile_image-70x70.png")
         .setURL('https://www.twitch.tv/itsbigwilly_')
