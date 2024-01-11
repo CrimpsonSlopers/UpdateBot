@@ -108,12 +108,14 @@ function verifyMessage(hmac, verifySignature) {
 function sendDiscordMessage(event) {
     const embed = new EmbedBuilder()
         .setColor(0x0099FF)
-        .setTitle(`NEW TITLE: ${event.title}`)
+        .setTitle(`${event.title}`)
         .addFields(
-            { name: 'Channel', value: event.broadcaster_user_name },
             { name: 'Category', value: event.category_name },
             { name: 'Changed', value: formatDate(new Date()) },
         )
+        .setThumbnail("https://static-cdn.jtvnw.net/jtv_user_pictures/cdc00955-e56b-437a-9347-52b50dc6a90c-profile_image-70x70.png")
+        .setURL('https://www.twitch.tv/itsbigwilly_')
+
 
     var num = Math.floor(Math.random() * 10);
     webhookClient.send({
@@ -121,6 +123,7 @@ function sendDiscordMessage(event) {
         username: 'BIgWilly Title Tracker',
         avatarURL: 'https://i.imgur.com/Afhttps://static-cdn.jtvnw.net/jtv_user_pictures/cdc00955-e56b-437a-9347-52b50dc6a90c-profile_image-70x70.pngFp7pu.png',
         embeds: [embed],
+
     });
 }
 
