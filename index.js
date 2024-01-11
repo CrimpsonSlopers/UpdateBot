@@ -21,8 +21,6 @@ const breakingNewsPhrases = [
     "Calling all attention! Prepare for a colossal news revelation that will send shockwaves!"
 ];
 
-const ROLE_ID = "1194202716080181279"
-
 
 // Notification request headers
 const TWITCH_MESSAGE_ID = 'Twitch-Eventsub-Message-Id'.toLowerCase();
@@ -35,11 +33,8 @@ const MESSAGE_TYPE_VERIFICATION = 'webhook_callback_verification';
 const MESSAGE_TYPE_NOTIFICATION = 'notification';
 const MESSAGE_TYPE_REVOCATION = 'revocation';
 
-// Prepend this string to the HMAC that's created from the message
-const HMAC_PREFIX = 'sha256=';
 
-
-app.use(express.raw({          // Need raw message body for signature verification
+app.use(express.raw({
     type: 'application/json'
 }))
 
@@ -50,7 +45,7 @@ app.get('/', (req, res) => {
 
 app.post('/eventsub', (req, res) => {
     let message = getHmacMessage(req);
-    let hmac = HMAC_PREFIX + getHmac(process.env.CLIENT_SECRET, message);
+    let hmac = 'sha256=' + getHmac(process.env.CLIENT_SECRET, message);
 
     if (true === verifyMessage(hmac, req.headers[TWITCH_MESSAGE_SIGNATURE])) {
         console.log("signatures match");
@@ -116,15 +111,15 @@ function sendDiscordMessage(event) {
         .setTitle(`NEW TITLE: ${event.title}`)
         .addFields(
             { name: 'Channel', value: event.broadcaster_user_name },
-            { name: 'Category', value: event.category_id },
+            { name: 'Category', value: event.category_name },
             { name: 'Changed', value: formatDate(new Date()) },
         )
 
     var num = Math.floor(Math.random() * 10);
     webhookClient.send({
-        content: `<@&${process.env.ROLE_ID}> ${breakingNewsPhrases[num]}`,
-        username: 'The BIgWilly Tribune',
-        avatarURL: 'https://i.imgur.com/AfFp7pu.png',
+        content: `<@&${process.env.ROLE_ID}>\n${breakingNewsPhrases[num]}`,
+        username: 'BIgWilly Title Tracker',
+        avatarURL: 'https://i.imgur.com/Afhttps://static-cdn.jtvnw.net/jtv_user_pictures/cdc00955-e56b-437a-9347-52b50dc6a90c-profile_image-70x70.pngFp7pu.png',
         embeds: [embed],
     });
 }
