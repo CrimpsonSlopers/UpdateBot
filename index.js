@@ -33,6 +33,8 @@ const MESSAGE_TYPE_VERIFICATION = 'webhook_callback_verification';
 const MESSAGE_TYPE_NOTIFICATION = 'notification';
 const MESSAGE_TYPE_REVOCATION = 'revocation';
 
+var RUNNING_TITLE = "MORE LETHAL THAN EVER???"
+
 
 app.use(express.raw({
     type: 'application/json'
@@ -48,15 +50,18 @@ app.post('/eventsub', (req, res) => {
     let hmac = 'sha256=' + getHmac(process.env.CLIENT_SECRET, message);
 
     if (true === verifyMessage(hmac, req.headers[TWITCH_MESSAGE_SIGNATURE])) {
-        console.log("signatures match");
-
         let notification = JSON.parse(req.body);
 
         if (MESSAGE_TYPE_NOTIFICATION === req.headers[MESSAGE_TYPE]) {
-
             console.log(`Event type: ${notification.subscription.type}`);
             console.log(JSON.stringify(notification.event, null, 4));
-            sendDiscordMessage(notification.event)
+
+            if (notification.subscription.type == "channel.update") {
+                if (notification.event.title != RUNNING_TITLE) {
+                    RUNNING_TITLE = notification.event.title;
+                    sendTitleUpdateMessage(notification.event)
+                }
+            }
 
             res.sendStatus(204);
         }
@@ -105,12 +110,12 @@ function verifyMessage(hmac, verifySignature) {
     return crypto.timingSafeEqual(Buffer.from(hmac), Buffer.from(verifySignature));
 }
 
-function sendDiscordMessage(event) {
+function sendTitleUpdateMessage(data) {
     const embed = new EmbedBuilder()
         .setColor(0x0099FF)
-        .setTitle(`${event.title}`)
+        .setTitle(`${data.title}`)
         .addFields(
-            { name: 'Category', value: event.category_name },
+            { name: 'Category', value: data.category_name },
             { name: 'Changed', value: `<t:${Math.floor(Date.now() / 1000)}:R>` },
         )
         .setThumbnail("https://static-cdn.jtvnw.net/jtv_user_pictures/cdc00955-e56b-437a-9347-52b50dc6a90c-profile_image-70x70.png")
@@ -123,20 +128,5 @@ function sendDiscordMessage(event) {
         username: 'BIgWilly Title Tracker',
         avatarURL: 'https://i.imgur.com/Afhttps://static-cdn.jtvnw.net/jtv_user_pictures/cdc00955-e56b-437a-9347-52b50dc6a90c-profile_image-70x70.pngFp7pu.png',
         embeds: [embed],
-
     });
-}
-
-function formatDate(date) {
-    const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-    };
-
-    return new Date(date).toLocaleString('en-US', options);
 }
