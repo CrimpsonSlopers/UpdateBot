@@ -36,31 +36,21 @@ var RUNNING_TITLE = ""
 
 
 const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+require('body-parser-xml')(bodyParser);
 
 app.get("/", (req, res) => {
     console.log("REQUEST: '/'")
     res.send("This is a test route. Your server is up and running!");
 });
 
-app.get("/callback", (req, res) => {
-    res.send(req.query["hub.challenge"].toString()).status(200)
+app.get("/pubsub", ({ query: { 'hub.challenge': challenge } }, res) => {
+    console.log("challenge: ", challenge);
+    res.status(200).end(challenge)
 });
 
-app.post('/callback', (req, res) => {
-    console.log('POST request to the youtube callback');
-    console.log(req.body)
-    res.sendStatus(200);
-})
-
-app.get("/youtube", (req, res) => {
-    res.send(req.query["hub.challenge"].toString()).status(200)
-});
-
-app.post('/youtube', (req, res) => {
-    console.log('POST request to the youtube callback');
-    console.log(req.body)
-    res.sendStatus(200);
+app.post('/pubsub', bodyParser.xml(), ({ body: { feed } }, res) => {
+    console.log(feed);
+    res.status(204).end();
 })
 
 app.post("/eventsub", (req, res) => {
