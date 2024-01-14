@@ -1,40 +1,76 @@
 require('dotenv').config();
+const { subscriptions } = require("./utils/subscriptions")
 
-async function subscribeToEvent() {
+async function getAccessToken() {
     try {
         const tokenResponse = await fetch(`https://id.twitch.tv/oauth2/token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&grant_type=client_credentials`, {
             method: 'POST',
         });
 
         const tokenData = await tokenResponse.json();
-        console.log(tokenData)
+        return tokenData.access_token;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
 
-        const subscriptionResponse = await fetch('https://api.twitch.tv/helix/eventsub/subscriptions', {
+async function subscribeToEvent() {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await fetch('https://api.twitch.tv/helix/eventsub/subscriptions', {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + tokenData.access_token,
+                'Authorization': 'Bearer ' + accessToken,
                 'Client-Id': process.env.CLIENT_ID,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                'type': 'channel.update',
-                'version': '2',
-                'condition': {
-                    'broadcaster_user_id': process.env.USER_ID,
-                },
-                'transport': {
-                    'method': 'webhook',
-                    'callback': `${process.env.SERVER_URL}/eventsub`,
-                    'secret': process.env.CLIENT_SECRET
-                }
-            })
+            body: JSON.stringify(subscriptions['stream.offline'])
         });
 
-        const subscriptionData = await subscriptionResponse.json();
-        console.log(subscriptionData);
+        const data = await response.json();
+        console.log(data);
     } catch (err) {
         console.error(err);
     }
 }
 
-subscribeToEvent()
+async function listOfSubscriptions() {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await fetch('https://api.twitch.tv/helix/eventsub/subscriptions', {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+                'Client-Id': process.env.CLIENT_ID,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+        console.log(data);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
+async function deleteSubscription(id) {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await fetch('https://api.twitch.tv/helix/eventsub/subscriptions?id=' + id, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+                'Client-Id': process.env.CLIENT_ID,
+            }
+        });
+
+        const data = await response.json();
+        console.log(data);
+    } catch (err) {
+        console.error(err);
+    }
+}

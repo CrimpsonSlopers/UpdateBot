@@ -33,7 +33,7 @@ const MESSAGE_TYPE_VERIFICATION = "webhook_callback_verification";
 const MESSAGE_TYPE_NOTIFICATION = "notification";
 const MESSAGE_TYPE_REVOCATION = "revocation";
 
-var RUNNING_TITLE = "MORE LETHAL THAN EVER???"
+var RUNNING_TITLE = ""
 
 
 app.use(express.raw({
@@ -43,7 +43,6 @@ app.use(express.raw({
 app.get("/", (req, res) => {
     res.send("This is a test route. Your server is up and running!");
 });
-
 
 app.post("/eventsub", (req, res) => {
     let message = getHmacMessage(req);
