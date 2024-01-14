@@ -2,10 +2,12 @@ require("dotenv").config();
 const crypto = require("crypto");
 const express = require("express");
 const { EmbedBuilder, WebhookClient } = require("discord.js");
+const bodyParser = require('body-parser');
 
 const webhookClient = new WebhookClient({ id: process.env.WEBHOOK_ID, token: process.env.WEBHOOK_TOKEN });
 
 const app = express();
+require('body-parser-xml')(bodyParser);
 const port = 8080;
 
 const breakingNewsPhrases = [
@@ -33,10 +35,6 @@ const MESSAGE_TYPE_NOTIFICATION = "notification";
 const MESSAGE_TYPE_REVOCATION = "revocation";
 
 var RUNNING_TITLE = ""
-
-
-const bodyParser = require('body-parser');
-require('body-parser-xml')(bodyParser);
 
 app.get("/", (req, res) => {
     console.log("REQUEST: '/'")
