@@ -21,7 +21,6 @@ const breakingNewsPhrases = [
     "Calling all attention! Prepare for a colossal news revelation that will send shockwaves!"
 ];
 
-
 // Notification request headers
 const TWITCH_MESSAGE_ID = "Twitch-Eventsub-Message-Id".toLowerCase();
 const TWITCH_MESSAGE_TIMESTAMP = "Twitch-Eventsub-Message-Timestamp".toLowerCase();
@@ -42,6 +41,11 @@ app.use(express.raw({
 
 app.get("/", (req, res) => {
     res.send("This is a test route. Your server is up and running!");
+});
+
+app.post("/youtube/callback", (req, res) => {
+    console.log(req)
+    res.sendStatus(204);
 });
 
 app.post("/eventsub", (req, res) => {
