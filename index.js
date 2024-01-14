@@ -49,7 +49,17 @@ app.get("/callback", (req, res) => {
 
 app.post('/callback', (req, res) => {
     console.log('POST request to the youtube callback');
-    console.log(req)
+    console.log(req.body)
+    res.sendStatus(200);
+})
+
+app.get("/youtube", (req, res) => {
+    res.send(req.query["hub.challenge"].toString()).status(200)
+});
+
+app.post('/youtube', (req, res) => {
+    console.log('POST request to the youtube callback');
+    console.log(req.body)
     res.sendStatus(200);
 })
 
