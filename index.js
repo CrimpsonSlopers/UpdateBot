@@ -49,6 +49,11 @@ app.get("/youtube/callback", (req, res) => {
     res.sendStatus(200);
 });
 
+app.post('/youtube/callback', (req, res) => {
+    console.log('POST request to the youtube callback')
+    res.sendStatus(200);
+})
+
 app.post("/eventsub", (req, res) => {
     let message = getHmacMessage(req);
     let hmac = "sha256=" + getHmac(process.env.CLIENT_SECRET, message);
