@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const webhookClient = new WebhookClient({ id: process.env.WEBHOOK_ID, token: process.env.WEBHOOK_TOKEN });
 
 const app = express();
-require('body-parser-xml')(bodyParser);
 const port = 8080;
 
 const breakingNewsPhrases = [
@@ -36,8 +35,11 @@ const MESSAGE_TYPE_REVOCATION = "revocation";
 
 var RUNNING_TITLE = ""
 
+app.use(express.raw({          // Need raw message body for signature verification
+    type: 'application/json'
+}))
+
 app.get("/", (req, res) => {
-    console.log("REQUEST: '/'")
     res.send("This is a test route. Your server is up and running!");
 });
 
@@ -63,6 +65,8 @@ app.post('/pubsub', bodyParser.xml(), ({ body: { feed } }, res) => {
     console.log(entryValues);
     res.status(204).end();
 })
+
+
 
 app.post("/eventsub", (req, res) => {
     let message = getHmacMessage(req);
