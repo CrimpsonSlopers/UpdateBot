@@ -40,6 +40,7 @@ app.use(express.raw({
 }))
 
 app.get("/", (req, res) => {
+    console.log("REQUEST: '/'")
     res.send("This is a test route. Your server is up and running!");
 });
 
