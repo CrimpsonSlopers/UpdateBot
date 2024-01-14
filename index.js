@@ -35,9 +35,8 @@ const MESSAGE_TYPE_REVOCATION = "revocation";
 var RUNNING_TITLE = ""
 
 
-app.use(express.raw({
-    type: "application/json"
-}))
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
     console.log("REQUEST: '/'")
