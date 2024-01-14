@@ -44,7 +44,7 @@ app.get("/", (req, res) => {
     res.send("This is a test route. Your server is up and running!");
 });
 
-app.post("/youtube/callback", (req, res) => {
+app.get("/youtube/callback", (req, res) => {
     console.log(req)
     res.sendStatus(204);
 });
