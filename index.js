@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 
 app.get("/youtube/callback", (req, res) => {
     console.log(req)
-    res.sendStatus(204);
+    res.sendStatus(200);
 });
 
 app.post("/eventsub", (req, res) => {
