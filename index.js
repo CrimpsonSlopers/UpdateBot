@@ -49,7 +49,7 @@ app.get("/youtube/callback", (req, res) => {
 
 app.post('/youtube/callback', (req, res) => {
     console.log('POST request to the youtube callback');
-    console.log(req.body)
+    console.log(req)
     res.sendStatus(200);
 })
 
