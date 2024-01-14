@@ -43,11 +43,11 @@ app.get("/", (req, res) => {
     res.send("This is a test route. Your server is up and running!");
 });
 
-app.get("/youtube/callback", (req, res) => {
+app.get("/callback", (req, res) => {
     res.send(req.query["hub.challenge"].toString()).status(200)
 });
 
-app.post('/youtube/callback', (req, res) => {
+app.post('/callback', (req, res) => {
     console.log('POST request to the youtube callback');
     console.log(req)
     res.sendStatus(200);
