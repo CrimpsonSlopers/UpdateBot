@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 
 app.get("/youtube/callback", (req, res) => {
     console.log(req.query["hub.challenge"])
-    res.status(200).send(req.query["hub.challenge"].toString())
+    res.send(req.query["hub.challenge"].toString()).status(200)
 });
 
 app.post('/youtube/callback', (req, res) => {
