@@ -43,28 +43,28 @@ app.get("/", (req, res) => {
     res.send("This is a test route. Your server is up and running!");
 });
 
-app.get("/pubsub", ({ query: { 'hub.challenge': challenge } }, res) => {
-    console.log("challenge: ", challenge);
-    res.status(200).end(challenge)
-});
+// app.get("/pubsub", ({ query: { 'hub.challenge': challenge } }, res) => {
+//     console.log("challenge: ", challenge);
+//     res.status(200).end(challenge)
+// });
 
-app.post('/pubsub', bodyParser.xml(), ({ body: { feed } }, res) => {
-    console.log(feed);
-    // Parsing out values of entry array
-    const entryValues = feed.entry.map(entry => ({
-        id: entry.id,
-        videoId: entry['yt:videoId'],
-        channelId: entry['yt:channelId'],
-        title: entry.title,
-        link: entry.link,
-        author: entry.author,
-        published: entry.published,
-        updated: entry.updated
-    }));
+// app.post('/pubsub', bodyParser.xml(), ({ body: { feed } }, res) => {
+//     console.log(feed);
+//     // Parsing out values of entry array
+//     const entryValues = feed.entry.map(entry => ({
+//         id: entry.id,
+//         videoId: entry['yt:videoId'],
+//         channelId: entry['yt:channelId'],
+//         title: entry.title,
+//         link: entry.link,
+//         author: entry.author,
+//         published: entry.published,
+//         updated: entry.updated
+//     }));
 
-    console.log(entryValues);
-    res.status(204).end();
-})
+//     console.log(entryValues);
+//     res.status(204).end();
+// })
 
 
 
