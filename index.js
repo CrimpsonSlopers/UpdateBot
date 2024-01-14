@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 
 app.get("/youtube/callback", (req, res) => {
     console.log(req.query["hub.challenge"])
-    res.status(200).send(req.query["hub.challenge"])
+    res.status(200).send(req.query["hub.challenge"].toString())
 });
 
 app.post('/youtube/callback', (req, res) => {
@@ -78,7 +78,6 @@ app.post("/eventsub", (req, res) => {
         }
         else if (MESSAGE_TYPE_REVOCATION === req.headers[MESSAGE_TYPE]) {
             res.sendStatus(204);
-
             console.log(`${notification.subscription.type} notifications revoked!`);
             console.log(`reason: ${notification.subscription.status}`);
             console.log(`condition: ${JSON.stringify(notification.subscription.condition, null, 4)}`);
