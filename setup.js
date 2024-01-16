@@ -26,7 +26,7 @@ async function subscribeToEvent() {
                 'Client-Id': process.env.CLIENT_ID,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(subscriptions['stream.offline'])
+            body: JSON.stringify(subscriptions['channel.update'])
         });
 
         const data = await response.json();
@@ -73,4 +73,10 @@ async function deleteSubscription(id) {
     } catch (err) {
         console.error(err);
     }
+}
+
+module.exports = {
+    subscribeToEvent,
+    listOfSubscriptions,
+    deleteSubscription,
 }

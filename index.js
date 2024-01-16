@@ -2,9 +2,9 @@ require("dotenv").config();
 const crypto = require("crypto");
 const express = require("express");
 const { EmbedBuilder, WebhookClient } = require("discord.js");
-const bodyParser = require('body-parser');
+const { subscribeToEvent } = require("./setup")
 
-const webhookClient = new WebhookClient({ id: process.env.WEBHOOK_ID, token: process.env.WEBHOOK_TOKEN });
+const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_URL });
 
 const app = express();
 const port = 8080;
@@ -35,38 +35,17 @@ const MESSAGE_TYPE_REVOCATION = "revocation";
 
 var RUNNING_TITLE = ""
 
-app.use(express.raw({          // Need raw message body for signature verification
+app.use(express.raw({
     type: 'application/json'
 }))
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     res.send("This is a test route. Your server is up and running!");
 });
 
-// app.get("/pubsub", ({ query: { 'hub.challenge': challenge } }, res) => {
-//     console.log("challenge: ", challenge);
-//     res.status(200).end(challenge)
-// });
-
-// app.post('/pubsub', bodyParser.xml(), ({ body: { feed } }, res) => {
-//     console.log(feed);
-//     // Parsing out values of entry array
-//     const entryValues = feed.entry.map(entry => ({
-//         id: entry.id,
-//         videoId: entry['yt:videoId'],
-//         channelId: entry['yt:channelId'],
-//         title: entry.title,
-//         link: entry.link,
-//         author: entry.author,
-//         published: entry.published,
-//         updated: entry.updated
-//     }));
-
-//     console.log(entryValues);
-//     res.status(204).end();
-// })
-
-
+app.get("/", async (req, res) => {
+    res.send("This is a test route. Your server is up and running!");
+});
 
 app.post("/eventsub", (req, res) => {
     let message = getHmacMessage(req);
@@ -108,8 +87,9 @@ app.post("/eventsub", (req, res) => {
 
 })
 
-app.listen(port, () => {
-    console.log(`App listening at ${process.env.SERVER_URL}:${port}`);
+app.listen(port, async () => {
+    await subscribeToEvent();
+    console.log(`App listening at ${process.env.SERVER_URL}`);
 })
 
 // Build the message used to get the HMAC.
@@ -150,3 +130,4 @@ function sendTitleUpdateMessage(data) {
         embeds: [embed],
     });
 }
+
