@@ -88,7 +88,6 @@ app.post("/eventsub", (req, res) => {
 })
 
 app.listen(port, async () => {
-    await subscribeToEvent();
     console.log(`App listening at ${process.env.SERVER_URL}`);
 })
 
