@@ -90,7 +90,7 @@ app.post("/eventsub", (req, res) => {
 app.listen(port, async () => {
     console.log(`App listening at ${process.env.SERVER_URL}`);
 })
-
+//
 // Build the message used to get the HMAC.
 function getHmacMessage(request) {
     return (request.headers[TWITCH_MESSAGE_ID] +
